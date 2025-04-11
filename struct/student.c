@@ -38,6 +38,7 @@ int main(int ac, char **av)
     }
 
     i = 0;
+    printf("\n=== Student Records ===\n");
     while(i < total_students)
     {  
         printf("--------");
@@ -47,21 +48,31 @@ int main(int ac, char **av)
         i++;
     }
 
-    int j = 0;
-    printf("enter id for search:");
-    scanf("%d", &j);
+    int search_id = 0;
 
-    int x = 0;
-    while(x < total_students)
+    int j = 0;
+    printf("search id:");
+    scanf("%d", &search_id);
+    i = 0;
+    int found = 0;
+
+    while(i < total_students)
     {
-        if(students[x].id == j)
-        {
-            printf("student id: %d \n", students[x].id);
-            printf("name: %s\n",students[x].name );
-            printf("age: %d\n", students[x].age);
-            break;
+        if(search_id == students[i].id)
+        {   printf("student id: %d \n", students[i].id);
+            printf("name: %s\n",students[i].name );
+            printf("age: %d\n", students[i].age);
+            found = 1;
+            break ; 
         }
-        x++;
+        i++;
     }
 
+    if (!found)  // Only print not found if found is still 0
+    {
+        printf("Student with ID %d not found!\n", j);
+    }
+
+    free(students);
+    return 0;
 }
