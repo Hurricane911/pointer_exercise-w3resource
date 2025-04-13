@@ -10,94 +10,75 @@ typedef struct s_student
     float total_marks;
 } t_student;
 
-int main(int argc, char **argv)
+int main(int ac, char **av)
 {
     t_student *students;
-    int total_students;
-    int i = 0;
+    int total_student;
+
     FILE *file;
     char filename[100];
-    
-    //./a.out, no txt
-    if (argc != 2)
+    int i = 0;
+
+    if (ac != 2)
     {
-        printf("Usage: %s <filename>\n", argv[0]);
-        printf("Enter the filename: ");
+        printf("<file_name> format: %s\n", av[0]);
         scanf("%s", filename);
+        // printf("%s", filename);
     }
     else
     {
-        // with txt
-        strcpy(filename, argv[1]);
+        strcpy(filename, av[1]);
+        // printf("%s", filename);
     }
-    
+
     file = fopen(filename, "r");
-    if (file == NULL)
+    if(!file)
     {
-        printf("Error opening file %s\n", filename);
+        printf("error files");
         return 1;
     }
+
+    fscanf(file, "%d", &total_student);
     
-    // Read the number of students from the first line
-    fscanf(file, "%d", &total_students);
-    
-    students = malloc(sizeof(t_student) * total_students);
-    if (students == NULL)
+    students = malloc(sizeof(t_student) * total_student);
+    if(!students)
     {
-        printf("Memory allocation failed\n");
+        printf("malloc erro");
         fclose(file);
-        return 1;
+        return (1);
     }
     
-    // Read student data from file
-    while (i < total_students && !feof(file))
+    while(i < total_student && !feof(file))
     {
         students[i].id = i + 1;
         fscanf(file, "%s %d", students[i].name, &students[i].age);
         i++;
     }
-    
-    fclose(file);
-    
-    // Display all students
-    i = 0;
-    printf("\n=== Student Records ===\n");
-    while (i < total_students)
-    {
-        printf("--------\n");
-        printf("Student ID: %d\n", students[i].id);
-        printf("Name: %s\n", students[i].name);
-        printf("Age: %d\n", students[i].age);
-        i++;
-    }
-    
-    // Search functionality
+    // printf("%s", students[0].name);
+
     int search_id;
     int found = 0;
-    
-    printf("\nEnter student ID to search: ");
-    scanf("%d", &search_id);
-    
     i = 0;
-    while (i < total_students)
+    printf("which id to search: ");
+    scanf("%d", &search_id);
+
+    while(i < total_student)
     {
-        if (search_id == students[i].id)
+        if(search_id == students[i].id)
         {
-            printf("\n=== Search Result ===\n");
-            printf("Student ID: %d\n", students[i].id);
-            printf("Name: %s\n", students[i].name);
-            printf("Age: %d\n", students[i].age);
+            printf("%d\n", students[i].id);
+            printf("%s\n", students[i].name);
+            printf("%d\n", students[i].age);
             found = 1;
             break;
         }
         i++;
     }
-    
-    if (!found)
+    if(!found)
     {
-        printf("Student with ID %d not found!\n", search_id);
+        printf("students id not found");
     }
-    
     free(students);
     return 0;
+    
 }
